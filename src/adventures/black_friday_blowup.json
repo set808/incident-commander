@@ -1,0 +1,154 @@
+{
+  "title": "Black Friday Blowup",
+  "description": "Resolve a critical checkout failure during the biggest shopping day of the year.",
+  "start": "intro",
+  "scenes": {
+    "intro": {
+      "text": "📦 12:01 PM — Black Friday Traffic Surge Detected\n\nALERT: Checkout service errors are spiking.\nYour team lead is OOO. You're the only one online.\n\n> What do you want to do?",
+      "logs": null,
+      "image": null,
+      "choices": [
+        {
+          "label": "View error rate chart",
+          "nextId": "view_chart",
+          "command": "nr charts error-rate --service checkout"
+        },
+        {
+          "label": "Restart checkout pods",
+          "nextId": "reboot_pods",
+          "command": "nr infra restart pods --service checkout"
+        }
+      ]
+    },
+    "view_chart": {
+      "text": "📊 Error rate spiked at 12:00 PM.\n\nLooks like something broke right after deploy.",
+      "logs": null,
+      "image": "error_rate_chart.png",
+      "choices": [
+        {
+          "label": "View recent deploys",
+          "nextId": "view_deploys",
+          "command": "nr deploys list --service checkout"
+        },
+        {
+          "label": "Search logs for 'timeout'",
+          "nextId": "search_logs",
+          "command": "nr logs search \"timeout\" --service checkout"
+        }
+      ]
+    },
+    "view_deploys": {
+      "text": "🚀 Deploy detected at 11:59 AM.\nCommit: 'hotfix/add-last-minute-banner'\n\nSuspicious timing.",
+      "logs": null,
+      "image": null,
+      "choices": [
+        {
+          "label": "Rollback deploy",
+          "nextId": "rollback_deploy",
+          "command": "nr deploys rollback --service checkout --commit hotfix/add-last-minute-banner"
+        },
+        {
+          "label": "Correlate deploy with errors",
+          "nextId": "correlate_deploy",
+          "command": "nr correlate deploy --with errors"
+        }
+      ]
+    },
+    "search_logs": {
+      "text": "🔍 12:00 PM - [ERROR] Request timeout after 5000ms\n\n~70% of errors point to Redis checkout timeouts.",
+      "logs": [
+        "[12:00:01] ERROR [checkout-service] Request timeout after 5000ms",
+        "[12:00:02] WARN  [checkout-service] Slow response from redis-checkout: 4821ms",
+        "[12:00:03] ERROR [checkout-service] RedisError: Max clients reached",
+        "[12:00:05] ERROR [checkout-service] Request timeout after 5000ms",
+        "[12:00:06] INFO  [checkout-service] Retrying order submission (attempt 2)",
+        "[12:00:07] ERROR [checkout-service] Request timeout after 5000ms",
+        "[12:00:09] WARN  [checkout-service] Redis latency above threshold: 4602ms",
+        "[12:00:10] ERROR [checkout-service] Request timeout after 5000ms"
+      ],
+      "image": null,
+      "choices": [
+        {
+          "label": "View host metrics",
+          "nextId": "view_host_metrics",
+          "command": "nr metrics host redis-01 --duration 10m"
+        },
+        {
+          "label": "Scale Redis service",
+          "nextId": "scale_redis",
+          "command": "nr infra scale redis-checkout --instances 3"
+        }
+      ]
+    },
+    "reboot_pods": {
+      "text": "🔁 Checkout pods restarted. Error rate drops briefly, then spikes again.\n\nSymptom treated. Root cause unresolved.",
+      "logs": null,
+      "image": null,
+      "choices": [
+        {
+          "label": "View error rate chart",
+          "nextId": "view_chart",
+          "command": "nr charts error-rate --service checkout"
+        }
+      ]
+    },
+    "rollback_deploy": {
+      "text": "✅ Rollback successful.\n\nError rate normalizing. Checkout back online.",
+      "logs": null,
+      "image": null,
+      "choices": [{ "label": "Finish", "nextId": "ending_success" }]
+    },
+    "scale_redis": {
+      "text": "📈 Redis scaled. Error rate decreases gradually.\n\nDeploy likely to blame, but infra helped stabilize.",
+      "logs": null,
+      "image": null,
+      "choices": [{ "label": "Finish", "nextId": "ending_partial_success" }]
+    },
+    "correlate_deploy": {
+      "text": "🔗 Found spike in errors and logs right after deploy.\n\nRoot cause: banner code created Redis overload loop.",
+      "logs": null,
+      "image": null,
+      "choices": [
+        {
+          "label": "Rollback deploy",
+          "nextId": "rollback_deploy",
+          "command": "nr deploys rollback --service checkout --commit hotfix/add-last-minute-banner"
+        },
+        {
+          "label": "Scale Redis instead",
+          "nextId": "scale_redis",
+          "command": "nr infra scale redis-checkout --instances 3"
+        }
+      ]
+    },
+    "view_host_metrics": {
+      "text": "🧠 Redis CPU: 96%\nConnections: Maxed out\n\nSomething's overloading the service.",
+      "logs": null,
+      "image": null,
+      "choices": [
+        {
+          "label": "Scale Redis",
+          "nextId": "scale_redis",
+          "command": "nr infra scale redis-checkout --instances 3"
+        },
+        {
+          "label": "Correlate deploy with load",
+          "nextId": "correlate_deploy",
+          "command": "nr correlate deploy --with load"
+        }
+      ]
+    },
+    "ending_success": {
+      "text": "🎉 Incident Resolved\n\n✅ You identified the root cause and took decisive action.\n🕒 Resolution time: 7 minutes\n🏅 Status: Certified O11y Commander",
+      "logs": null,
+      "image": null,
+      "choices": []
+    },
+    "ending_partial_success": {
+      "text": "🟡 Incident Stabilized\n\n✅ Checkout working again\n❌ Root cause not fully addressed\n🏅 Status: You kept the ship afloat!",
+      "logs": null,
+      "image": null,
+      "choices": []
+    }
+  }
+}
