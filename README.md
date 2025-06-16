@@ -34,7 +34,7 @@ Navigate a critical checkout service failure during peak Black Friday traffic. Y
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd o11y-adventure-game
+   cd incident-commander
    ```
 
 2. **Install dependencies**
