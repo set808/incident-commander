@@ -7,6 +7,7 @@
       "text": "📦 12:01 PM — Black Friday Traffic Surge Detected\n\nALERT: Checkout service errors are spiking.\nYour team lead is OOO. You're the only one online.\n\n> What do you want to do?",
       "logs": null,
       "image": null,
+      "chart": null,
       "choices": [
         {
           "label": "View error rate chart",
@@ -23,7 +24,21 @@
     "view_chart": {
       "text": "📊 Error rate spiked at 12:00 PM.\n\nLooks like something broke right after deploy.",
       "logs": null,
-      "image": "error_rate_chart.png",
+      "image": null,
+      "chart": {
+        "type": "braille",
+        "data": [
+          ["11:55", 15],
+          ["11:56", 22],
+          ["11:57", 18],
+          ["11:58", 20],
+          ["11:59", 19],
+          ["12:00", 75],
+          ["12:01", 88],
+          ["12:02", 92],
+          ["12:03", 93]
+        ]
+      },
       "choices": [
         {
           "label": "View recent deploys",
@@ -41,6 +56,7 @@
       "text": "🚀 Deploy detected at 11:59 AM.\nCommit: 'hotfix/add-last-minute-banner'\n\nSuspicious timing.",
       "logs": null,
       "image": null,
+      "chart": null,
       "choices": [
         {
           "label": "Rollback deploy",
@@ -67,6 +83,7 @@
         "[12:00:10] ERROR [checkout-service] Request timeout after 5000ms"
       ],
       "image": null,
+      "chart": null,
       "choices": [
         {
           "label": "View host metrics",
@@ -84,6 +101,7 @@
       "text": "🔁 Checkout pods restarted. Error rate drops briefly, then spikes again.\n\nSymptom treated. Root cause unresolved.",
       "logs": null,
       "image": null,
+      "chart": null,
       "choices": [
         {
           "label": "View error rate chart",
@@ -96,18 +114,21 @@
       "text": "✅ Rollback successful.\n\nError rate normalizing. Checkout back online.",
       "logs": null,
       "image": null,
+      "chart": null,
       "choices": [{ "label": "Finish", "nextId": "ending_success" }]
     },
     "scale_redis": {
       "text": "📈 Redis scaled. Error rate decreases gradually.\n\nDeploy likely to blame, but infra helped stabilize.",
       "logs": null,
       "image": null,
+      "chart": null,
       "choices": [{ "label": "Finish", "nextId": "ending_partial_success" }]
     },
     "correlate_deploy": {
       "text": "🔗 Found spike in errors and logs right after deploy.\n\nRoot cause: banner code created Redis overload loop.",
       "logs": null,
       "image": null,
+      "chart": null,
       "choices": [
         {
           "label": "Rollback deploy",
@@ -125,6 +146,7 @@
       "text": "🧠 Redis CPU: 96%\nConnections: Maxed out\n\nSomething's overloading the service.",
       "logs": null,
       "image": null,
+      "chart": null,
       "choices": [
         {
           "label": "Scale Redis",
@@ -142,12 +164,14 @@
       "text": "🎉 Incident Resolved\n\n✅ You identified the root cause and took decisive action.\n🕒 Resolution time: 7 minutes\n🏅 Status: Certified O11y Commander",
       "logs": null,
       "image": null,
+      "chart": null,
       "choices": []
     },
     "ending_partial_success": {
       "text": "🟡 Incident Stabilized\n\n✅ Checkout working again\n❌ Root cause not fully addressed\n🏅 Status: You kept the ship afloat!",
       "logs": null,
       "image": null,
+      "chart": null,
       "choices": []
     }
   }

@@ -4,10 +4,16 @@ export interface Choice {
     command?: string;
 }
 
+type SceneChart = {
+    type: 'braille' | 'bar' | 'line';
+    data: number[];
+}
+
 export interface Scene {
     text: string;
     image?: string | null;
     logs?: string[];
+    chart?: SceneChart;
     choices: Choice[];
 }
 

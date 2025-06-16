@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import type { Adventure, Scene, Choice } from "./types";
 import adventures from "./adventures";
+import CRTBrailleChart from "./components/BrailleChart";
 import "./App.css";
 
 export default function App() {
@@ -57,6 +58,9 @@ export default function App() {
             className="w-full mex-w-lg border border-green-400"
           />
         </div>
+      )}
+      {scene.chart && scene.chart.type === "braille" && (
+        <CRTBrailleChart dataPoints={scene.chart.data} />
       )}
       <p className="mb-4 whitespace-pre-line leading-relaxed text-green-300">
         {typedText}
